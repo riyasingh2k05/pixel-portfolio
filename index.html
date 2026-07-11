@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riya Singh — Pixel OS Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=VT323&amp;display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     RIYA OS — Retro Pixel Desktop Portfolio
+     EDIT TIP: Most text is plain HTML below. Links are marked
+     with  <!-- EDIT LINK -->  comments. Colors live in :root.
+     ============================================================ */
+  :root{
+    --pink:#ffd6e8;
+    --pink-deep:#ff9ec4;
+    --peach:#ffe0c7;
+    --lav:#e6dcff;
+    --lav-deep:#c3aeffff;
+    --mint:#cdf3dc;
+    --mint-deep:#7fd6a3;
+    --cream:#fff7f0;
+    --ink:#3a2f4a;
+    --ink-soft:#6b5c7e;
+    --pop-red:#ff5d5d;
+    --pop-green:#54cf86;
+    --pop-yellow:#ffcf5c;
+    --win-bar:#f3e6ff;
+    --shadow:6px 6px 0 rgba(58,47,74,.25);
+    --pixel-border:3px solid var(--ink);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'VT323', monospace;
+    color:var(--ink);
+    background:
+      linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),
+      linear-gradient(160deg,#ffd9ea 0%, #ffe3cf 42%, #ead9ff 100%);
+    background-size:32px 32px,32px 32px,100% 100%;
+    background-attachment:fixed;
+    overflow-x:hidden;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath d='M2 1h2v1h1v1h1v1h1v1h1v1h1v1h1v1h-2v1h1v2h-1v1h-1v-2h-1v-1h-1v2h-1z' fill='%23fff' stroke='%233a2f4a' stroke-width='.6'/%3E%3C/svg%3E") 2 1, auto;
+  }
+  h1,h2,h3,h4,.pixel{font-family:'Press Start 2P', monospace;}
+  a{cursor:inherit;}
+  button{font-family:'Press Start 2P', monospace; cursor:inherit;}
+
+  /* ---------- Pixel border box helper ---------- */
+  .pbox{
+    border:var(--pixel-border);
+    box-shadow:var(--shadow);
+    image-rendering:pixelated;
+  }
+  img{image-rendering:pixelated;}
+
+  /* ================= BOOT SCREEN ================= */
+  #boot{
+    position:fixed; inset:0; z-index:9999;
+    background:#1a1226;
+    display:none; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:26px; text-align:center; padding:24px;
+    transition:opacity .6s ease;
+  }
+  #boot.gone{opacity:0; pointer-events:none;}
+  /* Boot intro is a JS enhancement; only show it when JS is active so content stays reachable without JS */
+  body.js-on #boot{display:flex;}
+  .boot-logo{
+    font-family:'Press Start 2P'; font-size:clamp(16px,5vw,30px);
+    color:var(--pink); line-height:1.6;
+    text-shadow:3px 3px 0 var(--lav-deep), 6px 6px 0 rgba(0,0,0,.3);
+  }
+  .boot-sub{font-family:'Press Start 2P'; font-size:10px; color:var(--mint-deep); letter-spacing:1px;}
+  .boot-barwrap{width:min(320px,80vw); height:22px; border:3px solid var(--pink); background:#2a1e3d; padding:3px;}
+  .boot-bar{height:100%; width:0%; background:repeating-linear-gradient(90deg,var(--pink) 0 8px,var(--pink-deep) 8px 16px); animation:bootfill 2.4s steps(24) forwards;}
+  @keyframes bootfill{to{width:100%;}}
+  .boot-tip{font-family:'VT323'; font-size:20px; color:#c9b8e6;}
+  .boot-start{
+    margin-top:6px; background:var(--mint-deep); color:#fff;
+    border:3px solid #fff; padding:12px 22px; font-size:10px;
+    box-shadow:4px 4px 0 rgba(0,0,0,.35);
+    opacity:0; transform:translateY(8px); transition:.3s;
+  }
+  .boot-start.ready{opacity:1; transform:none; animation:pulse 1s infinite alternate;}
+  @keyframes pulse{to{transform:translateY(-3px);}}
+  .boot-start:active{transform:translate(2px,2px); box-shadow:2px 2px 0 rgba(0,0,0,.35);}
+
+  /* ================= MENU BAR ================= */
+  #menubar{
+    position:fixed; top:0; left:0; right:0; z-index:900;
+    height:34px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 12px; background:rgba(255,255,255,.72);
+    backdrop-filter:blur(6px); border-bottom:3px solid var(--ink);
+    font-family:'Press Start 2P'; font-size:9px;
+  }
+  #menubar .mb-left{display:flex; align-items:center; gap:14px;}
+  #menubar .mb-name{color:var(--ink); display:flex; align-items:center; gap:7px;}
+  #menubar .mb-item{color:var(--ink-soft); display:none;}
+  @media(min-width:720px){#menubar .mb-item{display:inline;} #menubar{font-size:10px;}}
+  #menubar .mb-item:hover{color:var(--pink-deep);}
+  #menubar .mb-right{display:flex; align-items:center; gap:10px;}
+  #menubar .mb-status{display:flex; align-items:center; gap:9px;}
+  #menubar .mb-status svg{display:block;}
+  #clock{color:var(--ink); white-space:nowrap;}
+
+  /* ================= FLOATING CLOUDS ================= */
+  .cloud{position:fixed; z-index:1; pointer-events:none; opacity:.9;}
+  .cloud svg{display:block;}
+  .c1{top:12%; left:-140px; animation:drift 46s linear infinite;}
+  .c2{top:26%; left:-200px; animation:drift 66s linear infinite; animation-delay:-20s; transform:scale(.7);}
+  .c3{top:52%; left:-160px; animation:drift 80s linear infinite; animation-delay:-40s; transform:scale(1.15);}
+  @keyframes drift{to{transform:translateX(120vw);}}
+  .c2{animation-name:drift2;} @keyframes drift2{to{transform:translateX(120vw) scale(.7);}}
+  .c3{animation-name:drift3;} @keyframes drift3{to{transform:translateX(120vw) scale(1.15);}}
+
+  /* ================= GROUND + WALKING GIRL ================= */
+  #ground{
+    position:fixed; left:0; right:0; bottom:0; z-index:120; height:38px;
+    background:
+      linear-gradient(180deg,#8bd88f 0 10px,#66c06f 10px 16px,#b98a5e 16px 100%);
+    border-top:3px solid var(--ink);
+    pointer-events:none;
+  }
+  #ground:before{
+    content:""; position:absolute; top:2px; left:0; right:0; height:6px;
+    background:repeating-linear-gradient(90deg,#a7e6a9 0 6px,transparent 6px 18px);
+  }
+  #walker{
+    position:fixed; bottom:30px; left:0; z-index:121;
+    width:78px; height:auto; pointer-events:none;
+    transform:translateX(4vw);
+    transition:transform .12s linear;
+    filter:drop-shadow(2px 4px 0 rgba(58,47,74,.25));
+  }
+  #walker.step{animation:bob .45s steps(2) infinite;}
+  @keyframes bob{50%{transform:translateY(-3px) rotate(-1deg);}}
+  @media(max-width:640px){#walker{width:56px; bottom:30px;}}
+  /* pixel cat trailing the girl */
+  #cat{
+    position:fixed; bottom:30px; left:0; z-index:121;
+    width:46px; height:auto; pointer-events:none;
+    transform:translateX(4vw);
+    transition:transform .12s linear;
+    filter:drop-shadow(2px 4px 0 rgba(58,47,74,.25));
+  }
+  #cat.step{animation:catbob .3s steps(2) infinite;}
+  @keyframes catbob{50%{transform:translateY(-2px);}}
+  @media(max-width:640px){#cat{width:34px; bottom:30px;}}
+
+  /* ================= HERO / DESKTOP ================= */
+  #desktop{
+    position:relative; min-height:100vh; padding:64px 16px 120px;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center; z-index:5;
+  }
+  .sticky-note{
+    position:absolute; top:78px; right:18px; width:170px; z-index:8;
+    background:var(--pop-yellow); color:#5a4b1f; padding:14px 12px 16px;
+    font-family:'VT323'; font-size:20px; line-height:1.1;
+    border:3px solid var(--ink); box-shadow:var(--shadow);
+    transform:rotate(4deg);
+  }
+  .sticky-note b{font-family:'Press Start 2P'; font-size:8px; display:block; margin-bottom:6px;}
+  .sticky-note .sig{display:block; margin-top:10px; font-family:'VT323'; font-size:17px; color:#8a7430;}
+  .sticky-note:after{content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%); width:44px; height:16px; background:rgba(255,255,255,.55); border:2px solid rgba(58,47,74,.35);}
+  @media(max-width:640px){.sticky-note{position:relative; top:0; right:0; margin:0 auto 8px; transform:rotate(-2deg);}}
+
+  .hero-badge{font-family:'Press Start 2P'; font-size:9px; color:var(--pink-deep); background:#fff; border:3px solid var(--ink); padding:8px 12px; box-shadow:var(--shadow); margin-top:20px;}
+  .hero-title{font-size:clamp(26px,8vw,60px); margin:22px 0 6px; color:var(--ink); text-shadow:4px 4px 0 var(--pink), 8px 8px 0 rgba(58,47,74,.12); line-height:1.25;}
+  .hero-role{font-family:'Press Start 2P'; font-size:clamp(9px,2.4vw,13px); color:var(--lav-deep); letter-spacing:1px;}
+  .hero-desc{font-family:'VT323'; font-size:22px; max-width:560px; margin:16px auto 4px; color:var(--ink-soft);}
+
+  /* Avatar pixel frame */
+  .avatar-frame{
+    position:relative; width:170px; height:170px; margin:22px auto 6px;
+    border:4px solid var(--ink); background:#fff; padding:8px;
+    box-shadow:var(--shadow);
+    background-image:
+      linear-gradient(45deg,var(--pink) 25%,transparent 25%),
+      linear-gradient(-45deg,var(--lav) 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,var(--mint) 75%),
+      linear-gradient(-45deg,transparent 75%,var(--peach) 75%);
+    background-size:16px 16px; background-position:0 0,0 8px,8px -8px,-8px 0;
+  }
+  .avatar-frame img{width:100%; height:100%; object-fit:cover; border:3px solid var(--ink); display:block; image-rendering:auto;}
+  .avatar-frame .heart{position:absolute; top:-14px; right:-14px; font-size:22px; animation:bob 1.2s steps(2) infinite;}
+
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:20px;}
+  .btn{
+    font-family:'Press Start 2P'; font-size:9px; padding:12px 16px;
+    border:3px solid var(--ink); box-shadow:4px 4px 0 rgba(58,47,74,.3);
+    color:var(--ink); text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .05s, box-shadow .05s;
+  }
+  .btn:active{transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(58,47,74,.3);}
+  .btn-pink{background:var(--pink-deep); color:#fff;}
+  .btn-mint{background:var(--mint-deep); color:#fff;}
+  .btn-lav{background:var(--lav-deep); color:#fff;}
+  .btn-cream{background:#fff;}
+
+  /* Dock */
+  .dock{
+    margin-top:44px; display:flex; gap:14px; align-items:flex-end;
+    padding:12px 16px; background:rgba(255,255,255,.6); backdrop-filter:blur(6px);
+    border:3px solid var(--ink); box-shadow:var(--shadow); flex-wrap:wrap; justify-content:center;
+  }
+  .dock-icon{
+    width:66px; height:66px; background:transparent; border:none; padding:0;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    transition:transform .12s;
+  }
+  .dock-icon img{width:56px; height:56px; object-fit:contain;}
+  .dock-icon span{font-family:'Press Start 2P'; font-size:6px; color:var(--ink); max-width:70px; line-height:1.3;}
+  .dock-icon:hover{transform:translateY(-8px) scale(1.06);}
+  .dock-icon:active{transform:translateY(-2px);}
+  .dock-label{font-family:'Press Start 2P'; font-size:8px; color:var(--ink-soft); margin-top:14px;}
+
+  .scroll-hint{margin-top:26px; font-family:'Press Start 2P'; font-size:9px; color:var(--ink); animation:bob 1s steps(2) infinite;}
+
+  /* ================= LEVEL SECTIONS ================= */
+  .level{
+    position:relative; min-height:100vh; z-index:5;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:80px 16px 130px; text-align:center;
+  }
+  .level-card{
+    width:min(520px,94vw);
+    background:rgba(255,255,255,.82); border:4px solid var(--ink);
+    box-shadow:var(--shadow); padding:28px 22px 30px;
+    transition:opacity .5s ease, transform .5s cubic-bezier(.2,1.3,.4,1);
+  }
+  /* JS-enhanced entrance: only hide when JS is active */
+  body.js-on .level-card{opacity:0; transform:translateY(28px) scale(.96);}
+  body.js-on .level-card.in{opacity:1; transform:none;}
+  .level-tag{display:inline-block; font-family:'Press Start 2P'; font-size:9px; color:#fff; background:var(--lav-deep); border:3px solid var(--ink); padding:7px 12px; box-shadow:3px 3px 0 rgba(58,47,74,.3);}
+  .level-num{font-family:'Press Start 2P'; font-size:clamp(20px,6vw,34px); margin:16px 0 6px; color:var(--pink-deep); text-shadow:3px 3px 0 rgba(58,47,74,.15);}
+  .level-heading{font-family:'Press Start 2P'; font-size:clamp(12px,3.4vw,18px); color:var(--ink); margin:0 0 12px;}
+  .level-desc{font-family:'VT323'; font-size:21px; color:var(--ink-soft); max-width:400px; margin:0 auto 20px;}
+  .unlock-btn{
+    font-family:'Press Start 2P'; font-size:10px; color:#fff; background:var(--pop-green);
+    border:3px solid var(--ink); padding:14px 20px; box-shadow:4px 4px 0 rgba(58,47,74,.35);
+    display:inline-flex; align-items:center; gap:8px; transition:transform .05s, box-shadow .05s;
+  }
+  .unlock-btn:active{transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(58,47,74,.35);}
+  .unlock-btn.locked .lock-open{display:none;}
+  .unlock-btn.unlocked{background:var(--ink-soft);}
+  .unlock-btn.unlocked .lock-closed{display:none;}
+
+  /* ================= MAC WINDOWS ================= */
+  #win-layer{position:fixed; inset:0; z-index:800; pointer-events:none;}
+  .win{
+    position:absolute; top:14%; left:50%; transform:translateX(-50%);
+    width:min(560px,92vw); max-height:80vh; background:var(--cream);
+    border:4px solid var(--ink); box-shadow:8px 8px 0 rgba(58,47,74,.35);
+    display:none; flex-direction:column; pointer-events:auto; overflow:hidden;
+  }
+  .win.open{display:flex; animation:winpop .28s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes winpop{from{opacity:0; transform:translateX(-50%) scale(.85);}}
+  .win-bar{
+    display:flex; align-items:center; gap:8px; padding:9px 12px;
+    background:var(--win-bar); border-bottom:3px solid var(--ink);
+    cursor:grab; user-select:none; touch-action:none;
+  }
+  .win-bar:active{cursor:grabbing;}
+  .lights{display:flex; gap:7px;}
+  .light{width:15px; height:15px; border:2px solid var(--ink); border-radius:50%;}
+  .light.r{background:var(--pop-red);} .light.y{background:var(--pop-yellow);} .light.g{background:var(--pop-green);}
+  .light.r:hover{filter:brightness(1.15);}
+  .win-title{font-family:'Press Start 2P'; font-size:9px; color:var(--ink); margin-left:6px; flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .win-body{padding:20px; overflow-y:auto; font-family:'VT323'; font-size:20px; color:var(--ink);}
+  .win-body h4{font-family:'Press Start 2P'; font-size:12px; color:var(--pink-deep); margin:0 0 4px;}
+
+  /* skill groups */
+  .skill-group{margin-bottom:16px; text-align:left;}
+  .skill-group .sg-title{font-family:'Press Start 2P'; font-size:9px; color:var(--lav-deep); margin-bottom:8px;}
+  .chip{display:inline-block; font-family:'VT323'; font-size:18px; line-height:1; background:#fff; border:2px solid var(--ink); padding:6px 9px; margin:0 6px 6px 0; box-shadow:2px 2px 0 rgba(58,47,74,.2);}
+  .chip.mint{background:var(--mint);} .chip.pink{background:var(--pink);} .chip.lav{background:var(--lav);} .chip.peach{background:var(--peach);}
+
+  /* experience */
+  .xp-item{text-align:left; border:2px solid var(--ink); background:#fff; padding:12px 14px; margin-bottom:14px; box-shadow:3px 3px 0 rgba(58,47,74,.18);}
+  .xp-item .role{font-family:'Press Start 2P'; font-size:10px; color:var(--ink);}
+  .xp-item .org{font-family:'Press Start 2P'; font-size:8px; color:var(--pink-deep); margin:6px 0 8px;}
+  .xp-item ul{margin:0; padding-left:18px; font-size:19px; color:var(--ink-soft);}
+
+  /* projects file window */
+  .file-window .win-body{padding:0;}
+  .file-tabs{display:flex; gap:4px; padding:10px 12px 0; background:var(--peach); border-bottom:3px solid var(--ink);}
+  .file-tab{font-family:'Press Start 2P'; font-size:7px; padding:7px 9px; background:#fff; border:2px solid var(--ink); border-bottom:none; color:var(--ink-soft);}
+  .file-tab.active{background:var(--pink); color:var(--ink);}
+  .file-page{padding:20px 22px 8px; text-align:left; display:none;}
+  .file-page.active{display:block; animation:winpop .25s ease;}
+  .file-page .pj-type{font-family:'Press Start 2P'; font-size:7px; color:var(--lav-deep); margin-bottom:8px; letter-spacing:.5px;}
+  .file-page h4{font-size:12px; margin-bottom:10px; line-height:1.5;}
+  .file-page ul{padding-left:18px; font-size:19px; color:var(--ink-soft); margin:0 0 12px;}
+  .file-page .tags span{display:inline-block; font-family:'VT323'; font-size:16px; background:var(--mint); border:2px solid var(--ink); padding:3px 7px; margin:0 5px 5px 0;}
+  .file-nav{display:flex; align-items:center; justify-content:space-between; padding:10px 20px 18px;}
+  .file-arrow{font-family:'Press Start 2P'; font-size:10px; color:#fff; background:var(--lav-deep); border:3px solid var(--ink); padding:10px 14px; box-shadow:3px 3px 0 rgba(58,47,74,.3);}
+  .file-arrow:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(58,47,74,.3);}
+  .file-arrow:disabled{opacity:.4;}
+  .file-count{font-family:'Press Start 2P'; font-size:8px; color:var(--ink-soft);}
+  .view-link{display:inline-flex; align-items:center; gap:8px; font-family:'Press Start 2P'; font-size:8px; color:#fff; background:var(--pop-green); border:3px solid var(--ink); padding:10px 14px; text-decoration:none; box-shadow:3px 3px 0 rgba(58,47,74,.3); margin-top:4px;}
+  .view-link:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(58,47,74,.3);}
+
+  /* resume window */
+  .resume-inner{text-align:center;}
+  .resume-inner .doc{width:120px; height:150px; margin:6px auto 16px; background:#fff; border:3px solid var(--ink); box-shadow:4px 4px 0 rgba(58,47,74,.25); position:relative; overflow:hidden;}
+  .resume-inner .doc:before{content:""; position:absolute; top:0; right:0; border-width:0 26px 26px 0; border-style:solid; border-color:var(--peach) var(--cream);}
+  .resume-inner .doc .lines{position:absolute; top:34px; left:14px; right:14px; display:flex; flex-direction:column; gap:8px;}
+  .resume-inner .doc .lines i{display:block; height:6px; background:var(--lav);}
+  .resume-inner .doc .lines i:nth-child(2){width:80%;} .resume-inner .doc .lines i:nth-child(4){width:60%;}
+
+  /* contacts window */
+  .contact-list{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink); background:#fff; border:2px solid var(--ink); padding:12px 14px; box-shadow:3px 3px 0 rgba(58,47,74,.18); transition:transform .05s;}
+  .contact-row:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(58,47,74,.18);}
+  .contact-row .ci{width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:20px; border:2px solid var(--ink);}
+  .contact-row .ct{text-align:left;}
+  .contact-row .ct b{font-family:'Press Start 2P'; font-size:8px; display:block; margin-bottom:4px;}
+  .contact-row .ct span{font-family:'VT323'; font-size:18px; color:var(--ink-soft); word-break:break-all;}
+  .mail-cta{margin-top:16px; width:100%; justify-content:center; font-family:'Press Start 2P'; font-size:9px; color:#fff; background:var(--pop-red); border:3px solid var(--ink); padding:14px; display:inline-flex; align-items:center; gap:8px; text-decoration:none; box-shadow:4px 4px 0 rgba(58,47,74,.3);}
+  .mail-cta:active{transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(58,47,74,.3);}
+
+  /* trash / rejected concepts */
+  .trash-win .win-body ul{list-style:none; padding:0; margin:0; text-align:left;}
+  .trash-win .win-body li{font-family:'VT323'; font-size:20px; padding:9px 0; border-bottom:2px dashed var(--ink-soft); color:var(--ink-soft);}
+  .trash-win .win-body li:before{content:"🗑 "; }
+
+  /* footer note */
+  footer{position:relative; z-index:5; text-align:center; padding:20px 16px 70px; font-family:'Press Start 2P'; font-size:8px; color:var(--ink-soft);}
+
+  /* toast */
+  #toast{position:fixed; bottom:56px; left:50%; transform:translateX(-50%) translateY(20px); z-index:950; background:var(--ink); color:#fff; font-family:'Press Start 2P'; font-size:9px; padding:12px 16px; border:3px solid #fff; box-shadow:4px 4px 0 rgba(0,0,0,.3); opacity:0; transition:.3s; pointer-events:none;}
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  @media(max-width:640px){
+    .win{top:56px; max-height:76vh;}
+    .win-body{font-size:19px;}
+    .dock{gap:10px;}
+    .dock-icon{width:58px; height:58px;}
+    .dock-icon img{width:48px; height:48px;}
+  }
+</style>
+<script src="https://cdn.moda.app/runtime-libs/tailwind-browser-4.1.13-index.global.min.js"></script><style data-moda-export-fonts="true">@font-face { font-family: 'Press Start 2P'; src: url("../fonts/pressstart2p-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'VT323'; src: url("../fonts/vt323-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }</style></head>
+<body>
+
+<!-- ================= BOOT SCREEN ================= -->
+<div id="boot">
+  <div class="boot-logo">RIYA&nbsp;OS<br>v2.0.26</div>
+  <div class="boot-sub">✦ LOADING PORTFOLIO ✦</div>
+  <div class="boot-barwrap"><div class="boot-bar"></div></div>
+  <div class="boot-tip">initializing cuteness modules...</div>
+  <button class="boot-start" id="bootStart">▶ START</button>
+</div>
+
+<!-- ================= MENU BAR ================= -->
+<div id="menubar">
+  <div class="mb-left">
+    <span class="mb-name">🌸 Riya&nbsp;Singh</span>
+    <span class="mb-item" data-scroll="#level2">Skills</span>
+    <span class="mb-item" data-scroll="#level3">Experience</span>
+    <span class="mb-item" data-scroll="#level4">Projects</span>
+    <span class="mb-item" data-scroll="#level6">Contact</span>
+  </div>
+  <div class="mb-right">
+    <div class="mb-status">
+      <!-- speaker -->
+      <svg width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="none" stroke="#3a2f4a" stroke-width="1"><path d="M2 6h2l3-3v10l-3-3H2z" fill="#3a2f4a" stroke="none"></path><path d="M10 5c1.5 1 1.5 5 0 6M12 3c3 2 3 8 0 10"></path></svg>
+      <!-- wifi -->
+      <svg width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="none" stroke="#3a2f4a" stroke-width="1.4"><path d="M2 5.5C5.5 2 10.5 2 14 5.5M4 8C6.5 5.5 9.5 5.5 12 8M6 10.5C7 9.5 9 9.5 10 10.5"></path><rect x="7.2" y="12" width="1.6" height="1.6" fill="#3a2f4a" stroke="none"></rect></svg>
+      <!-- battery -->
+      <svg width="22" height="16" viewBox="0 0 22 16" shape-rendering="crispEdges" fill="none" stroke="#3a2f4a" stroke-width="1.2"><rect x="2" y="5" width="16" height="7" rx="1"></rect><rect x="18.5" y="7" width="1.8" height="3" fill="#3a2f4a" stroke="none"></rect><rect x="3.5" y="6.5" width="11" height="4" fill="#54cf86" stroke="none"></rect></svg>
+    </div>
+    <div id="clock">--:--:--</div>
+  </div>
+</div>
+
+<!-- ================= CLOUDS ================= -->
+<div class="cloud c1">
+  <svg width="120" height="60" viewBox="0 0 20 10" shape-rendering="crispEdges"><path d="M4 6h1v-1h1v-1h2v-1h3v1h2v1h2v1h1v2h-12z" fill="#fff"></path><path d="M4 8h13v1h-13z" fill="#eadcff"></path></svg>
+</div>
+<div class="cloud c2">
+  <svg width="120" height="60" viewBox="0 0 20 10" shape-rendering="crispEdges"><path d="M4 6h1v-1h1v-1h2v-1h3v1h2v1h2v1h1v2h-12z" fill="#fff"></path><path d="M4 8h13v1h-13z" fill="#ffe0ee"></path></svg>
+</div>
+<div class="cloud c3">
+  <svg width="120" height="60" viewBox="0 0 20 10" shape-rendering="crispEdges"><path d="M4 6h1v-1h1v-1h2v-1h3v1h2v1h2v1h1v2h-12z" fill="#fff"></path><path d="M4 8h13v1h-13z" fill="#dff5e6"></path></svg>
+</div>
+
+<!-- ================= DESKTOP / HERO ================= -->
+<section id="desktop">
+  <!-- Sticky note tagline (EDIT text here) -->
+  <div class="sticky-note">
+    <b>♡ note to self</b>
+    Charming aesthetics, serious analytics.
+    <span class="sig">— Riya Singh</span>
+  </div>
+
+  <span class="hero-badge">✦ HELLO, I'M</span>
+  <div class="avatar-frame">
+    <span class="heart">💗</span>
+    <!-- EDIT PHOTO: swap src to change profile picture -->
+    <img src="../images/320ea6a8-acae-497f-a263-43adc2dd0e7a.jpg" alt="Riya Singh">
+  </div>
+  <h1 class="hero-title">RIYA SINGH</h1>
+  <div class="hero-role">Data Analyst · ML Engineer · BI Developer</div>
+  <p class="hero-desc">A curious BCA (AI) student who turns messy data into executive-level insights, dashboards &amp; predictive models. Press an icon to start the game ♡</p>
+
+  <div class="dock-label">✦ MY PROJECTS ✦</div>
+  <div class="dock">
+    <button class="dock-icon" data-win="win-trash"><img src="../images/65ab7cf3-f257-4b09-a040-8e98472489a0.svg" alt="Reject" style="image-rendering:auto;"><span>Reject</span></button>
+  </div>
+
+  <div class="scroll-hint">▼ SCROLL TO PLAY ▼</div>
+</section>
+
+<!-- ================= LEVEL 2 — SKILLS ================= -->
+<section class="level" id="level2">
+  <div class="level-card">
+    <div class="level-num">Level 01</div>
+    <h3 class="level-heading">SKILLS</h3>
+    <p class="level-desc">A power-up chest full of tools &amp; tech. Ready to open it?</p>
+    <button class="unlock-btn locked" data-win="win-skills"><span class="lock-closed">🔒 UNLOCK SKILLS</span><span class="lock-open">🔓 OPEN SKILLS</span></button>
+  </div>
+</section>
+
+<!-- ================= LEVEL 3 — EXPERIENCE ================= -->
+<section class="level" id="level3">
+  <div class="level-card">
+    <div class="level-num">Level 02</div>
+    <h3 class="level-heading">EXPERIENCE</h3>
+    <p class="level-desc">Quests completed &amp; XP earned along the journey.</p>
+    <button class="unlock-btn locked" data-win="win-xp"><span class="lock-closed">🔒 UNLOCK EXPERIENCE</span><span class="lock-open">🔓 OPEN EXPERIENCE</span></button>
+  </div>
+</section>
+
+<!-- ================= LEVEL 4 — PROJECTS ================= -->
+<section class="level" id="level4">
+  <div class="level-card">
+    <div class="level-num">Level 03</div>
+    <h3 class="level-heading">PROJECTS</h3>
+    <p class="level-desc">Open the mission file. Flip the pages to see every build.</p>
+    <button class="unlock-btn locked" data-win="win-projects"><span class="lock-closed">🔒 UNLOCK PROJECTS</span><span class="lock-open">🔓 OPEN PROJECTS</span></button>
+  </div>
+</section>
+
+<!-- ================= LEVEL 5 — RESUME ================= -->
+<section class="level" id="level5">
+  <div class="level-card">
+    <div class="level-num">Level 04</div>
+    <h3 class="level-heading">RESUME</h3>
+    <p class="level-desc">Grab the full character sheet for the archives.</p>
+    <button class="unlock-btn locked" data-win="win-resume"><span class="lock-closed">🔒 UNLOCK RESUME</span><span class="lock-open">🔓 OPEN RESUME</span></button>
+  </div>
+</section>
+
+<!-- ================= LEVEL 6 — CONTACTS ================= -->
+<section class="level" id="level6">
+  <div class="level-card">
+    <div class="level-num">Level 05</div>
+    <h3 class="level-heading">CONTACTS</h3>
+    <p class="level-desc">Final boss unlocked! Let's team up — say hi ♡</p>
+    <button class="unlock-btn locked" data-win="win-contacts"><span class="lock-closed">🔒 UNLOCK CONTACTS</span><span class="lock-open">🔓 OPEN CONTACTS</span></button>
+  </div>
+</section>
+
+<footer>MADE WITH ♡ &amp; PIXELS · RIYA OS © 2026</footer>
+
+<!-- ================= WINDOW LAYER ================= -->
+<div id="win-layer">
+
+  <!-- SKILLS -->
+  <div class="win" id="win-skills">
+    <div class="win-bar">
+      <div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div>
+      <span class="win-title">skills_mastery.exe</span>
+    </div>
+    <div class="win-body">
+      <div class="skill-group"><div class="sg-title">▹ Programming</div>
+        <span class="chip mint">Python</span><span class="chip mint">Pandas</span><span class="chip mint">NumPy</span><span class="chip mint">Scikit-Learn</span><span class="chip mint">XGBoost</span><span class="chip mint">BeautifulSoup</span><span class="chip mint">Requests</span><span class="chip mint">SQL</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Data &amp; BI Tools</div>
+        <span class="chip pink">Power BI</span><span class="chip pink">Excel</span><span class="chip pink">Data Visualization</span><span class="chip pink">Dashboards</span><span class="chip pink">KPI Reporting</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Machine Learning &amp; AI</div>
+        <span class="chip lav">Supervised Learning</span><span class="chip lav">Classification</span><span class="chip lav">Churn Prediction</span><span class="chip lav">Regression</span><span class="chip lav">Feature Engineering</span><span class="chip lav">ROC-AUC</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Data Engineering</div>
+        <span class="chip peach">ETL Pipelines</span><span class="chip peach">Web Scraping</span><span class="chip peach">Data Wrangling</span><span class="chip peach">Data Cleaning</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Database &amp; Querying</div>
+        <span class="chip mint">Joins</span><span class="chip mint">Window Functions</span><span class="chip mint">Aggregations</span><span class="chip mint">Subqueries</span><span class="chip mint">Query Optimization</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Other Tools</div>
+        <span class="chip lav">UiPath (RPA)</span><span class="chip lav">Git</span><span class="chip lav">MS Word</span>
+      </div>
+      <div class="skill-group"><div class="sg-title">▹ Soft Skills &amp; Languages</div>
+        <span class="chip pink">Problem Solving</span><span class="chip pink">Communication</span><span class="chip pink">Entrepreneurial Thinking</span><span class="chip pink">Collaboration</span><span class="chip pink">Client Handling</span><span class="chip peach">English</span><span class="chip peach">Hindi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="win" id="win-xp">
+    <div class="win-bar">
+      <div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div>
+      <span class="win-title">experience_log.exe</span>
+    </div>
+    <div class="win-body">
+      <div class="xp-item">
+        <div class="role">Business Analyst — Virtual Intern</div>
+        <div class="org">Celonis</div>
+        <ul>
+          <li>Gained hands-on exposure to process mining &amp; execution management frameworks to eliminate operational inefficiencies.</li>
+          <li>Analyzed event-log data to map end-to-end business processes, uncovering bottlenecks &amp; actionable improvements.</li>
+        </ul>
+      </div>
+      <div class="xp-item">
+        <div class="role">AI &amp; ML — Virtual Intern</div>
+        <div class="org">EduSkills (Google Developers Program)</div>
+        <ul>
+          <li>Completed 100% of the Google Developers AI/ML curriculum, mastering supervised &amp; unsupervised frameworks.</li>
+          <li>Achieved a 70% improvement in technical ML proficiency through project-based learning.</li>
+        </ul>
+      </div>
+      <div class="xp-item">
+        <div class="role">Employability Skills — Intern</div>
+        <div class="org">Wadhwani Foundation</div>
+        <ul>
+          <li>Developed professional communication, customer handling &amp; workplace collaboration skills.</li>
+          <li>Achieved an 80% improvement in core employability competencies &amp; professional conduct benchmarks.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS (file window with page turn) -->
+  <div class="win file-window" id="win-projects">
+    <div class="win-bar">
+      <div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div>
+      <span class="win-title">mission_files.folder</span>
+    </div>
+    <div class="win-body">
+      <div class="file-tabs">
+        <span class="file-tab active">📁 projects</span>
+        <span class="file-tab">4 files</span>
+      </div>
+
+      <div class="file-page active" data-page="0">
+        <div class="pj-type">POWER BI · PYTHON · PANDAS · ETL</div>
+        <h4>Retail Sales &amp; Logistics Performance Dashboard</h4>
+        <ul>
+          <li>Engineered an end-to-end Python &amp; Power BI pipeline turning raw transactional data into an interactive executive dashboard tracking $2.30M revenue &amp; a 12.03% avg profit margin.</li>
+          <li>Optimized supply-chain visibility by 40% with custom date-delta metrics mapping monthly sales trends vs ~4-day avg shipping delay to catch seasonal bottlenecks.</li>
+        </ul>
+        <div class="tags"><span>Power BI</span><span>Python</span><span>Pandas</span><span>Data Viz</span></div>
+        <!-- EDIT LINK: retail dashboard -->
+        <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/tree/main/retail%20sales%20dashboard" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+      </div>
+
+      <div class="file-page" data-page="1">
+        <div class="pj-type">PYTHON · XGBOOST · SCIKIT-LEARN · ROC-AUC</div>
+        <h4>Predictive Customer Retention Analytics Platform</h4>
+        <ul>
+          <li>Engineered an end-to-end predictive ML pipeline using Python (XGBoost) to classify churn risk across 7,000+ customer accounts, optimizing ROC-AUC.</li>
+          <li>Translated model probabilities into ROI by targeting the top 10% highest-risk accounts — a proactive framework capable of 25% revenue recovery.</li>
+        </ul>
+        <div class="tags"><span>XGBoost</span><span>Scikit-Learn</span><span>Classification</span><span>ROC-AUC</span></div>
+        <!-- EDIT LINK: customer churn -->
+        <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/blob/main/customer%20churn.ipynb" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+      </div>
+
+      <div class="file-page" data-page="2">
+        <div class="pj-type">PYTHON · BEAUTIFULSOUP · REQUESTS</div>
+        <h4>Automated Market Intelligence &amp; Web Scraping System</h4>
+        <ul>
+          <li>Engineered an automated market-intelligence pipeline using Python (BeautifulSoup &amp; Requests) to harvest unstructured web data into structured competitor datasets.</li>
+          <li>Isolated 4 distinct market vulnerabilities via a competitive-benchmarking script mapping real-time pricing vs customer ratings to uncover pricing gaps.</li>
+        </ul>
+        <div class="tags"><span>BeautifulSoup</span><span>Requests</span><span>Web Scraping</span><span>Competitive Analysis</span></div>
+        <!-- EDIT LINK: market scraping -->
+        <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/blob/main/market%20scraping.ipynb" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+      </div>
+
+      <div class="file-page" data-page="3">
+        <div class="pj-type">HTML · CSS · JS · PIXEL DESIGN</div>
+        <h4>Pixel OS Portfolio (this site!)</h4>
+        <ul>
+          <li>Designed &amp; built a retro pixel-art macOS-style portfolio with boot screen, draggable windows, 8-bit sounds &amp; a game-world level flow.</li>
+          <li>Fully responsive, pastel-themed, and crafted to showcase data projects as an interactive game.</li>
+        </ul>
+        <div class="tags"><span>Pixel Art</span><span>HTML/CSS/JS</span><span>UI Design</span></div>
+        <!-- EDIT LINK: portfolio / github -->
+        <a class="view-link" href="https://github.com/riyasingh2k05" target="_blank" rel="noopener">▶ VIEW GITHUB</a>
+      </div>
+
+      <div class="file-nav">
+        <button class="file-arrow" id="prevPage">◀</button>
+        <span class="file-count"><span id="pageNow">1</span> / 4</span>
+        <button class="file-arrow" id="nextPage">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUME -->
+  <div class="win" id="win-resume">
+    <div class="win-bar">
+      <div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div>
+      <span class="win-title">resume.pdf</span>
+    </div>
+    <div class="win-body">
+      <div class="resume-inner">
+        <div class="doc"><div class="lines"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <h4 style="font-size:11px;margin-bottom:8px;">RIYA SINGH — RESUME</h4>
+        <p style="font-size:20px;color:var(--ink-soft);margin:0 auto 18px;max-width:340px;">The full character sheet: skills, experience, projects &amp; education, all in one PDF.</p>
+        <!-- EDIT LINK: resume file -->
+        <a class="view-link" style="justify-content:center;" href="https://api.moda.app/api/v2/images/ref/38a07964-4aeb-4d5f-8be7-657b6f461d23?v=0681af08&amp;s=825f2e35776104272f1a45d930bda555" target="_blank" rel="noopener" download="Riya_Singh_Resume.pdf">⬇ DOWNLOAD RESUME</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="win" id="win-contacts">
+    <div class="win-bar">
+      <div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div>
+      <span class="win-title">contacts.exe</span>
+    </div>
+    <div class="win-body">
+      <div class="contact-list">
+        <!-- EDIT LINK: email -->
+        <a class="contact-row" href="mailto:riyasingh2k05@gmail.com"><span class="ci" style="background:var(--pink);">✉</span><span class="ct"><b>Email</b><span>riyasingh2k05@gmail.com</span></span></a>
+        <!-- EDIT LINK: linkedin -->
+        <a class="contact-row" href="https://www.linkedin.com/in/riyasingh2k05/" target="_blank" rel="noopener"><span class="ci" style="background:var(--lav);">in</span><span class="ct"><b>LinkedIn</b><span>linkedin.com/in/riyasingh2k05</span></span></a>
+        <!-- EDIT LINK: github -->
+        <a class="contact-row" href="https://github.com/riyasingh2k05" target="_blank" rel="noopener"><span class="ci" style="background:var(--mint);">◐</span><span class="ct"><b>GitHub</b><span>github.com/riyasingh2k05</span></span></a>
+      </div>
+      <!-- EDIT LINK: opens Gmail compose directly -->
+      <a class="mail-cta" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=riyasingh2k05@gmail.com&amp;su=Hi%20Riya!" target="_blank" rel="noopener">✉ MESSAGE ME ON GMAIL</a>
+    </div>
+  </div>
+
+  <!-- PROJECT DETAIL WINDOWS (from dock icons) -->
+  <div class="win" id="win-p1">
+    <div class="win-bar"><div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div><span class="win-title">retail_dashboard.pbix</span></div>
+    <div class="win-body" style="text-align:left;">
+      <h4>Retail Sales &amp; Logistics Dashboard</h4>
+      <p style="color:var(--ink-soft);">End-to-end Python &amp; Power BI pipeline tracking $2.30M revenue, 12.03% profit margin &amp; 40% better supply-chain visibility.</p>
+      <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/tree/main/retail%20sales%20dashboard" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+    </div>
+  </div>
+  <div class="win" id="win-p2">
+    <div class="win-bar"><div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div><span class="win-title">customer_churn.ipynb</span></div>
+    <div class="win-body" style="text-align:left;">
+      <h4>Customer Retention Analytics</h4>
+      <p style="color:var(--ink-soft);">XGBoost churn model across 7,000+ accounts, optimized ROC-AUC &amp; a retention framework worth 25% revenue recovery.</p>
+      <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/blob/main/customer%20churn.ipynb" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+    </div>
+  </div>
+  <div class="win" id="win-p3">
+    <div class="win-bar"><div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div><span class="win-title">market_scraping.ipynb</span></div>
+    <div class="win-body" style="text-align:left;">
+      <h4>Market Intelligence Web Scraper</h4>
+      <p style="color:var(--ink-soft);">Automated BeautifulSoup + Requests pipeline turning raw HTML into competitor datasets; isolated 4 market vulnerabilities.</p>
+      <a class="view-link" href="https://github.com/riyasingh2k05/data-science-potfolio/blob/main/market%20scraping.ipynb" target="_blank" rel="noopener">▶ VIEW PROJECT</a>
+    </div>
+  </div>
+  <div class="win" id="win-p4">
+    <div class="win-bar"><div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div><span class="win-title">pixel_portfolio.html</span></div>
+    <div class="win-body" style="text-align:left;">
+      <h4>Pixel OS Portfolio</h4>
+      <p style="color:var(--ink-soft);">This retro pixel macOS portfolio — boot screen, draggable windows, 8-bit sounds &amp; a game-world flow.</p>
+      <a class="view-link" href="https://github.com/riyasingh2k05" target="_blank" rel="noopener">▶ VIEW GITHUB</a>
+    </div>
+  </div>
+
+  <!-- TRASH / REJECTED CONCEPTS EASTER EGG -->
+  <div class="win trash-win" id="win-trash">
+    <div class="win-bar"><div class="lights"><button class="light r" data-close=""></button><span class="light y"></span><span class="light g"></span></div><span class="win-title">rejected_concepts.trash</span></div>
+    <div class="win-body">
+      <p style="color:var(--pink-deep);font-family:'Press Start 2P';font-size:9px;margin-top:0;">🕹 secret bin unlocked!</p>
+      <ul>
+        <li>"Comic Sans everywhere" theme</li>
+        <li>Blinding neon dark-mode v0</li>
+        <li>Auto-playing dubstep intro</li>
+        <li>A resume written entirely in emojis</li>
+        <li>Cursor that runs away from your mouse</li>
+        <li>"Under construction" gif graveyard</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= WALKING GIRL + CAT + GROUND ================= -->
+<img id="walker" src="../images/ae9b6b29-6e77-450e-aff9-d273f9089c70.png" alt="Pixel Riya walking">
+<img id="cat" src="../images/e0edb535-3e33-4bad-a1be-c63b1b9b2558.png" alt="Pixel cat walking">
+<div id="ground"></div>
+
+<!-- ================= TOAST ================= -->
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  document.body.classList.add('js-on');
+
+  /* ---------- 8-BIT SOUND ENGINE (WebAudio) ---------- */
+  var actx=null;
+  function AC(){ if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}} return actx; }
+  function beep(freq,dur,type,vol){
+    var ctx=AC(); if(!ctx) return;
+    var o=ctx.createOscillator(), g=ctx.createGain();
+    o.type=type||'square'; o.frequency.value=freq;
+    g.gain.value=vol||0.06;
+    o.connect(g); g.connect(ctx.destination);
+    var t=ctx.currentTime; o.start(t);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+(dur||0.12));
+    o.stop(t+(dur||0.12));
+  }
+  function sOpen(){ beep(523,0.08,'square',0.06); setTimeout(function(){beep(784,0.12,'square',0.06);},70); }
+  function sClose(){ beep(392,0.08,'square',0.05); setTimeout(function(){beep(262,0.12,'square',0.05);},70); }
+  function sClick(){ beep(660,0.06,'square',0.05); }
+  function sUnlock(){ beep(523,0.07,'triangle',0.07); setTimeout(function(){beep(659,0.07,'triangle',0.07);},80); setTimeout(function(){beep(988,0.16,'triangle',0.07);},160); }
+
+  /* ---------- BOOT ---------- */
+  var boot=document.getElementById('boot'), bootStart=document.getElementById('bootStart');
+  setTimeout(function(){ bootStart.classList.add('ready'); }, 2500);
+  function dismissBoot(){ AC(); sUnlock(); boot.classList.add('gone'); setTimeout(function(){boot.style.display='none';},650); }
+  bootStart.addEventListener('click', dismissBoot);
+  setTimeout(function(){ if(!boot.classList.contains('gone')) { /* auto-ready but wait for user */ } }, 4000);
+
+  /* ---------- LIVE CLOCK ---------- */
+  var clock=document.getElementById('clock');
+  function tick(){
+    var d=new Date();
+    function p(n){return (n<10?'0':'')+n;}
+    var h=d.getHours(), ap=h>=12?'PM':'AM', h12=h%12||12;
+    clock.textContent=p(h12)+':'+p(d.getMinutes())+':'+p(d.getSeconds())+' '+ap;
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ---------- TOAST ---------- */
+  var toast=document.getElementById('toast'), toastT;
+  function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){toast.classList.remove('show');},1800); }
+
+  /* ---------- WINDOW SYSTEM ---------- */
+  var zTop=810;
+  function openWin(id){
+    var w=document.getElementById(id); if(!w) return;
+    if(!w.classList.contains('open')){ w.classList.add('open'); sOpen(); }
+    zTop++; w.style.zIndex=zTop;
+    // slight cascade so stacked windows don't perfectly overlap
+    if(!w.dataset.placed){
+      var n=document.querySelectorAll('.win.open').length;
+      var off=(n-1)*18;
+      w.style.top='calc(14% + '+off+'px)';
+      w.dataset.placed='1';
+    }
+  }
+  function closeWin(w){ w.classList.remove('open'); sClose(); }
+
+  // open triggers (dock icons + unlock buttons)
+  document.querySelectorAll('[data-win]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id=btn.getAttribute('data-win');
+      openWin(id);
+      if(btn.classList.contains('unlock-btn')){
+        btn.classList.remove('locked'); btn.classList.add('unlocked');
+        sUnlock();
+      }
+    });
+  });
+
+  // close buttons
+  document.querySelectorAll('[data-close]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); closeWin(b.closest('.win')); });
+  });
+
+  // bring to front on any click inside window
+  document.querySelectorAll('.win').forEach(function(w){
+    w.addEventListener('pointerdown', function(){ zTop++; w.style.zIndex=zTop; });
+  });
+
+  /* ---------- DRAGGABLE WINDOWS ---------- */
+  document.querySelectorAll('.win').forEach(function(w){
+    var bar=w.querySelector('.win-bar');
+    var drag=false, sx=0, sy=0, ox=0, oy=0;
+    bar.addEventListener('pointerdown', function(e){
+      if(e.target.closest('[data-close]')) return;
+      drag=true; bar.setPointerCapture(e.pointerId);
+      var r=w.getBoundingClientRect();
+      // switch to absolute px positioning on first drag
+      w.style.left=r.left+'px'; w.style.top=r.top+'px'; w.style.transform='none';
+      sx=e.clientX; sy=e.clientY; ox=r.left; oy=r.top;
+    });
+    bar.addEventListener('pointermove', function(e){
+      if(!drag) return;
+      var nx=ox+(e.clientX-sx), ny=oy+(e.clientY-sy);
+      nx=Math.max(-w.offsetWidth+80, Math.min(window.innerWidth-80, nx));
+      ny=Math.max(36, Math.min(window.innerHeight-60, ny));
+      w.style.left=nx+'px'; w.style.top=ny+'px';
+    });
+    bar.addEventListener('pointerup', function(e){ drag=false; try{bar.releasePointerCapture(e.pointerId);}catch(_){} });
+  });
+
+  /* ---------- PROJECT FILE PAGE TURN ---------- */
+  var pages=document.querySelectorAll('#win-projects .file-page');
+  var pageNow=document.getElementById('pageNow');
+  var prevBtn=document.getElementById('prevPage'), nextBtn=document.getElementById('nextPage');
+  var cur=0;
+  function renderPage(){
+    pages.forEach(function(p,i){ p.classList.toggle('active', i===cur); });
+    pageNow.textContent=(cur+1);
+    prevBtn.disabled=(cur===0); nextBtn.disabled=(cur===pages.length-1);
+  }
+  if(prevBtn&&nextBtn){
+    prevBtn.addEventListener('click', function(){ if(cur>0){cur--; renderPage(); sClick();} });
+    nextBtn.addEventListener('click', function(){ if(cur<pages.length-1){cur++; renderPage(); sClick();} });
+    renderPage();
+  }
+
+  /* ---------- MENU BAR SCROLL ---------- */
+  document.querySelectorAll('#menubar [data-scroll]').forEach(function(el){
+    el.addEventListener('click', function(){ var t=document.querySelector(el.getAttribute('data-scroll')); if(t) t.scrollIntoView({behavior:'smooth'}); sClick(); });
+  });
+
+  /* ---------- LEVEL CARD REVEAL ---------- */
+  var cards=document.querySelectorAll('.level-card');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); } });
+    },{threshold:0.25});
+    cards.forEach(function(c){ io.observe(c); });
+  } else { cards.forEach(function(c){c.classList.add('in');}); }
+  // fallback: ensure visible even without JS-triggered reveal after load
+  window.addEventListener('load', function(){ setTimeout(function(){ cards.forEach(function(c){ var r=c.getBoundingClientRect(); if(r.top<window.innerHeight) c.classList.add('in'); }); },400); });
+
+  /* ---------- WALKING GIRL + CAT (scroll-driven) ---------- */
+  var walker=document.getElementById('walker');
+  var cat=document.getElementById('cat');
+  var flip=false;
+  var catGap=54; // px the cat trails behind the girl
+  function moveWalker(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    var p=max>0 ? window.scrollY/max : 0;
+    var travel=window.innerWidth-100; // px range across screen
+    var x=8 + p*travel;
+    walker.style.transform='translateX('+x+'px)'+(flip?' scaleX(-1)':'');
+    if(cat){
+      // cat sits behind the girl relative to travel direction
+      var cx=x + (flip? catGap : -catGap);
+      cx=Math.max(2, cx);
+      cat.style.transform='translateX('+cx+'px)'+(flip?' scaleX(-1)':'');
+    }
+  }
+  var lastY=0, walkTimer;
+  window.addEventListener('scroll', function(){
+    var y=window.scrollY;
+    flip = y<lastY; // face left when scrolling up
+    lastY=y;
+    walker.classList.add('step');
+    if(cat) cat.classList.add('step');
+    moveWalker();
+    clearTimeout(walkTimer);
+    walkTimer=setTimeout(function(){ walker.classList.remove('step'); if(cat) cat.classList.remove('step'); },200);
+  }, {passive:true});
+  window.addEventListener('resize', moveWalker);
+  moveWalker();
+
+  /* ---------- click sound on all buttons/links ---------- */
+  document.querySelectorAll('.btn, .view-link, .mail-cta, .contact-row, .dock-icon, .unlock-btn').forEach(function(el){
+    el.addEventListener('click', function(){ sClick(); });
+  });
+
+  /* first-time hint */
+  setTimeout(function(){ if(!boot.classList.contains('gone')) return; }, 100);
+})();
+</script>
+
+</body></html>
